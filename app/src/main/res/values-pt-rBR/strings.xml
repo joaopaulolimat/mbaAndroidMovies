@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Contatos</string>
+    <string name="login" >Entrar</string>
+    <string name="contact_mail">E-mail</string>
+    <string name="contact_phone">Telefone</string>
+    <string name="contact_job">Profissão</string>
+    <string name="contact_birthdate">Nascimento</string>
+    <string name="contact_postal">CEP</string>
+    <string name="contact_name">Nome</string>
+    <string name="contact_save">Salvar</string>
+    <string name="register_contact">Cadastrar</string>
+    <string name="confirm_password">Confirmar senha</string>
+    <string name="password_contact">Senha</string>
+    <string name="movies_bar">Filmes</string>
+    <string name="add_movies_bar">Adicionar filme</string>
+    <string name="error_register_name">O nome é obrigatório</string>
+    <string name="error_register_mail">Insira um e-mail válido</string>
+    <string name="error_register_phone">Telefone inválido</string>
+    <string name="error_register_cep">CEP inválido Exemplo: xxxxxxxx</string>
+    <string name="error_register_job">O campo profissão é obrigatório</string>
+    <string name="error_register_date">Data de nascimento inválido\nEx: dd/mm/yyyy</string>
+    <string name="contact_edit_done">Contato editado com sucesso!!</string>
+    <string name="contact_edit_error">Falha ao editar contato, tente novamente!</string>
+    <string name="contact_register_done">Contato salvo com sucesso!!</string>
+    <string name="contact_register_error">Falha ao salvar contato, tente novamente!</string>
+    <string name="all_fields_required">Todos os campos são obrigatórios.</string>
+    <string name="weak_password">A senha deve conter pelo menos 6 caracteres.</string>
+    <string name="match_password">As senhas devem ser iguais.</string>
+    <string name="user_registered">Usuário cadastrado com sucesso.</string>
+    <string name="user_register_fail">Erro ao cadastrar usuário.</string>
+    <string name="login_failed">Falha na autenticação</string>
+    <string name="login_done">Login realizado com sucesso.</string>
+    <string name="fields_for_login">Preencha o e-mail e/ou a senha.</string>
+    <string name="user_exists">Já cadastrado? Clique aqui</string>
+    <string name="user_need_register">Não possui cadastro? Clique aqui</string>
+    <string name="movies_collection">Movies Collection</string>
+</resources>

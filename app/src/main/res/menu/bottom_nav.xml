@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/movies_bar"
+        android:id="@+id/movies"
+        android:icon="@drawable/baseline_local_movies_24" />
+
+    <item android:title="@string/add_movies_bar"
+        android:id="@+id/add_movie"
+        android:icon="@drawable/baseline_library_add_24" />
+</menu>
