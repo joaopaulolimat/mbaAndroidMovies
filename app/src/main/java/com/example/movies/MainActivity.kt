@@ -1,4 +1,4 @@
-package com.example.registercontacts
+package com.example.movies
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

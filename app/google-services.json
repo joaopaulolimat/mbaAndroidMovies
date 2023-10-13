@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:648643332682:android:3493c3394f612e0863f4b3",
+        "mobilesdk_app_id": "1:648643332682:android:2cf293d211055a5b63f4b3",
         "android_client_info": {
-          "package_name": "com.examples.movies"
+          "package_name": "com.example.movies"
         }
       },
       "oauth_client": [],
