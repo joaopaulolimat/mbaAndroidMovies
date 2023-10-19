@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import com.example.movies.View.Movies
+import com.example.movies.View.SignUp
 import com.example.movies.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -21,10 +22,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
         auth = Firebase.auth
 
-
         setUpListener()
-
-
     }
 
     public override fun onStart() {
@@ -37,10 +35,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpListener() {
-//        binding.txtSignUp.setOnClickListener {
-//            val intent = Intent(this, SignUp::class.java)
-//            startActivity(intent)
-//        }
+        binding.txtSignUp.setOnClickListener {
+            val intent = Intent(this, SignUp::class.java)
+            startActivity(intent)
+        }
 
         binding.btnEntrar.setOnClickListener(View.OnClickListener {
 
@@ -76,6 +74,4 @@ class MainActivity : AppCompatActivity() {
                 }
         })
     }
-
-
 }
