@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import com.example.movies.R
+import com.example.movies.View.Movies
 import com.example.movies.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -29,11 +29,11 @@ class MainActivity : AppCompatActivity() {
 
     public override fun onStart() {
         super.onStart()
-//        val currentUser = auth.currentUser
-//        if (currentUser != null) {
-//            val intent = Intent(this, Contacts::class.java)
-//            startActivity(intent)
-//        }
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            val intent = Intent(this, Movies::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun setUpListener() {
@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
                             baseContext, getString(R.string.login_done),
                             Toast.LENGTH_SHORT
                         ).show()
-//                        val intent = Intent(this, Contacts::class.java)
+                        val intent = Intent(this, Movies::class.java)
                         startActivity(intent)
                     } else {
                         // If sign in fails, display a message to the user.

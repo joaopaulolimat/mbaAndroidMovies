@@ -3,8 +3,6 @@ package com.example.movies.View
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import com.example.movies.AddMovieFragment
-import com.example.movies.MoviesFragment
 import com.example.movies.R
 import com.example.movies.databinding.ActivityMoviesBinding
 
