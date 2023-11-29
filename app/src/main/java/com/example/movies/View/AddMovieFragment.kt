@@ -5,56 +5,130 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import com.example.movies.Adapter.CurrentMovie
+import com.example.movies.Model.Movie
 import com.example.movies.R
+import com.example.movies.databinding.FragmentAddMovieBinding
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
+import java.util.UUID
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [AddMovieFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class AddMovieFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var db = Firebase.firestore
+    private var _binding:FragmentAddMovieBinding? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    private val binding get() = _binding!!
+    private val movie: Movie? = CurrentMovie.movie
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View {
+        _binding = FragmentAddMovieBinding.inflate(inflater, container, false)
+        val view = binding.root
+        getFields()
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        movie?.let { m ->
+            fillContactFields(m)
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_movie, container, false)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment AddMovieFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            AddMovieFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    private fun clearFields() {
+        binding.txtName.setText("")
+
+        val calendar = Calendar.getInstance()
+        val currentDate = calendar.timeInMillis
+        binding.calendarView.date = currentDate
+
+        binding.ratingBar.numStars = 0
+        binding.ratingBar.rating = 0.0f
+    }
+
+    private fun fillContactFields(movie: Movie) {
+        binding.txtName.setText(movie.name)
+
+        val date = dateFormat.parse(movie.logDate)
+        val timeInMillis = date.time
+
+        binding.calendarView.date = timeInMillis
+
+        binding.ratingBar.rating = movie.rating?.toFloat() ?: 0.0f
+    }
+
+    private fun getFields() {
+
+        binding.btnSave.setOnClickListener {
+
+            val name = binding.txtName.text.toString()
+
+            val timeInMillis = binding.calendarView.date
+            val logDate = dateFormat.format(Date(timeInMillis))
+
+            val rating = binding.ratingBar.rating.toString()
+
+            if (name.isEmpty()) {
+                binding.txtName.error = getString(R.string.error_register_name)
+            } else {
+                val contact = hashMapOf(
+                    "name" to name,
+                    "logDate" to logDate,
+                    "rating" to rating,
+                )
+
+                saveMovieDB(contact)
             }
+        }
+    }
+
+    private fun saveMovieDB(movie: HashMap<String, String>) {
+
+        if(this.movie != null) {
+            getFields()
+            val userRef = db.collection("movies").document(this.movie.id!!)
+            userRef.update(movie as Map<String, Any>)
+                .addOnSuccessListener {
+                    Toast.makeText(
+                        activity,
+                        getString(R.string.movie_edit_done),
+                        Toast.LENGTH_LONG).show()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(
+                        activity,
+                        getString(R.string.movie_edit_error),
+                        Toast.LENGTH_LONG).show()
+                }
+
+        } else {
+            val id = UUID.randomUUID().toString()
+            db.collection("movies").document(id)
+                .set(movie)
+                .addOnSuccessListener {
+                    clearFields()
+                    Toast.makeText(
+                        activity,
+                        getString(R.string.movie_register_done),
+                        Toast.LENGTH_LONG).show()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(
+                        activity,
+                        it.toString(),
+                        Toast.LENGTH_LONG).show()
+                }
+        }
     }
 }

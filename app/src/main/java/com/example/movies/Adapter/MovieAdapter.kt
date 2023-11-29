@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movies.Model.Movie
 import com.example.movies.R
+import com.example.movies.View.MoviesFragment
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -18,11 +19,16 @@ object CurrentMovie {
 
 class MovieAdapter(
     private val moviesList: ArrayList<Movie>,
-    private val onEditClickListener: OnEditClickListener
+    private val onEditClickListener: OnEditClickListener,
+    private val onShareClickListener: OnShareClickListener
 ) : RecyclerView.Adapter<MovieAdapter.MyViewHolder>() {
 
     interface OnEditClickListener {
         fun onEditClick(movie: Movie)
+    }
+
+    interface OnShareClickListener {
+        fun onShareClick(movie: Movie)
     }
 
     private var db = Firebase.firestore
@@ -55,6 +61,11 @@ class MovieAdapter(
             onEditClickListener.onEditClick(currentMovieToEdit)
         }
 
+        holder.btnShare.setOnClickListener{
+            val currentMovieToShare = moviesList[position]
+            CurrentMovie.movie = currentMovieToShare
+            onShareClickListener.onShareClick(currentMovieToShare)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -67,5 +78,6 @@ class MovieAdapter(
         val rating: TextView = itemView.findViewById(R.id.tvRating)
         var btnDelete: ImageView = itemView.findViewById(R.id.btn_delete)
         var btnEdit: ImageView = itemView.findViewById(R.id.btn_edit)
+        var btnShare: ImageView = itemView.findViewById(R.id.btn_share)
     }
 }

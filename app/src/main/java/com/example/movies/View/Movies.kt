@@ -20,6 +20,7 @@ class Movies : AppCompatActivity() {
             when (it.itemId) {
                 R.id.movies -> replaceFragment(MoviesFragment())
                 R.id.add_movie -> replaceFragment(AddMovieFragment())
+                R.id.about -> replaceFragment(AboutFragment())
                 else -> {}
             }
             true

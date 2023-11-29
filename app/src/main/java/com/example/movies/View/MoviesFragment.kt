@@ -1,11 +1,21 @@
 package com.example.movies.View
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.movies.Adapter.CurrentMovie
+import com.example.movies.Adapter.MovieAdapter
+import com.example.movies.Model.Movie
 import com.example.movies.R
+import com.example.movies.databinding.FragmentMoviesBinding
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -17,10 +27,17 @@ private const val ARG_PARAM2 = "param2"
  * Use the [MoviesFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MoviesFragment : Fragment() {
+class MoviesFragment : Fragment(), MovieAdapter.OnEditClickListener, MovieAdapter.OnShareClickListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+    private var _binding: FragmentMoviesBinding? = null
+    private val binding get() = _binding!!
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var moviesList: ArrayList<Movie>
+    private var db = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,27 +51,58 @@ class MoviesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_movies, container, false)
+
+        _binding = FragmentMoviesBinding.inflate(inflater, container, false)
+
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MoviesFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MoviesFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        contactInit()
+
+        val layoutManager = LinearLayoutManager(context)
+        recyclerView = view.findViewById(R.id.recyclerView)
+        recyclerView.layoutManager = layoutManager
+        recyclerView.setHasFixedSize(true)
+    }
+
+    private fun contactInit() {
+        db = FirebaseFirestore.getInstance()
+        db.collection("movies")
+            .addSnapshotListener { documents, _ ->
+                moviesList = arrayListOf()
+                documents?.map { document ->
+                    val contact = Movie(
+                        id = document.id,
+                        name = document.getString("name"),
+                        logDate = document.getString("logDate"),
+                        rating = document.getString("rating"),
+                    )
+                    moviesList.add(contact)
                 }
+                recyclerView.adapter = MovieAdapter(moviesList, this, this)
             }
     }
+
+    override fun onEditClick(movie: Movie) {
+        if (CurrentMovie.movie != null) {
+            val addMovieFragment = AddMovieFragment()
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.frame_layout, addMovieFragment)
+                .addToBackStack(null)
+                .commit()
+        }
+    }
+
+    override fun onShareClick(movie: Movie) {
+        val textToShare = "🎬 ${movie.name} \n ⭐️ ${movie.rating} \n 📆 ${movie.logDate}"
+
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/plain"
+        intent.putExtra(Intent.EXTRA_TEXT, textToShare)
+
+        startActivity(Intent.createChooser(intent, "Share"))
+    }
+
 }

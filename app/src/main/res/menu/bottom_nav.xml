@@ -8,4 +8,8 @@
     <item android:title="@string/add_movies_bar"
         android:id="@+id/add_movie"
         android:icon="@drawable/baseline_library_add_24" />
+
+    <item android:title="@string/about_bar"
+        android:id="@+id/about"
+        android:icon="@drawable/ic_about" />
 </menu>
