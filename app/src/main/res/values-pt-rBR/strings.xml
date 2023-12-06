@@ -1,11 +1,7 @@
 <resources>
     <string name="app_name">Movies</string>
-    <string name="login" >Entrar</string>
+    <string name="login">Entrar</string>
     <string name="movie_mail">E-mail</string>
-    <string name="movie_phone">Telefone</string>
-    <string name="movie_job">Profissão</string>
-    <string name="movie_birthdate">Nascimento</string>
-    <string name="movie_postal">CEP</string>
     <string name="movie_name">Nome</string>
     <string name="movie_save">Salvar</string>
     <string name="movie_log_date">Data</string>
@@ -17,13 +13,9 @@
     <string name="about_bar">Sobre</string>
     <string name="add_movies_bar">Adicionar filme</string>
     <string name="error_register_name">O nome é obrigatório</string>
-    <string name="error_register_phone">Telefone inválido</string>
-    <string name="error_register_cep">CEP inválido Exemplo: xxxxxxxx</string>
-    <string name="error_register_job">O campo profissão é obrigatório</string>
-    <string name="error_register_date">Data de nascimento inválido\nEx: dd/mm/yyyy</string>
-    <string name="movie_edit_done">Contato editado com sucesso!!</string>
-    <string name="movie_edit_error">Falha ao editar contato, tente novamente!</string>
-    <string name="movie_register_done">Filme salvo com sucesso!!</string>
+    <string name="movie_edit_done">Filme editado com sucesso!</string>
+    <string name="movie_edit_error">Falha ao editar filme, tente novamente!</string>
+    <string name="movie_register_done">Filme salvo com sucesso!</string>
     <string name="movie_register_error">Falha ao salvar filme, tente novamente!</string>
     <string name="all_fields_required">Todos os campos são obrigatórios.</string>
     <string name="weak_password">A senha deve conter pelo menos 6 caracteres.</string>
@@ -36,10 +28,13 @@
     <string name="user_exists">Já cadastrado? Clique aqui</string>
     <string name="user_need_register">Não possui cadastro? Clique aqui</string>
     <string name="movies_collection">Movies Collection</string>
-    <string name="about_fragment">João Paulo Tavares \n Versão: 1.0.0</string>
+    <string name="about_fragment">João Paulo Tavares</string>
     <string name="apagar">Apagar</string>
     <string name="editar">Editar</string>
     <string name="logo">Logo</string>
     <string name="entre_em_contato">Entre em contato</string>
     <string name="share">Compartilhar</string>
+    <string name="default_notification_channel_id">fcm_default_channel</string>
+    <string name="default_notification_channel_name">Canal de Avisos</string>
+    <string name="default_notification_channel_description">Canal de avisos do aplicativo Movies</string>
 </resources>

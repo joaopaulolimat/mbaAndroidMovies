@@ -5,17 +5,21 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.movies.R
+import com.example.movies.BuildConfig
 import com.example.movies.databinding.FragmentAboutBinding
-import com.example.movies.databinding.FragmentMoviesBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfig
 
 /**
  * A simple [Fragment] subclass.
@@ -33,6 +37,7 @@ class AboutFragment : Fragment(), OnMapReadyCallback {
     private var _binding: FragmentAboutBinding? = null
     private val binding get() = _binding!!
     private var mapView: MapView? = null
+    private val remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,20 +60,47 @@ class AboutFragment : Fragment(), OnMapReadyCallback {
         binding.btnCall.setOnClickListener {
             fazerLigacao()
         }
+        registerObserver()
         return binding.root
     }
 
+    private fun registerObserver() {
+        val isFeatureEnabled = remoteConfig.getBoolean("hide_map")
+        val appVersionRemote = remoteConfig.getString("app_version")
+
+        if (isFeatureEnabled) {
+            binding.mapView.visibility = GONE
+        } else {
+            binding.mapView.visibility = VISIBLE
+        }
+
+        if(!appVersionRemote.isNullOrEmpty()) {
+            binding.textView2.text = appVersionRemote
+        }
+    }
+
     override fun onMapReady(googleMap: GoogleMap) {
-        val fiap = LatLng(-23.5640843, -46.6523865)
+        val fiapPaulista = LatLng(-23.5640843, -46.6523865)
+        val fiapAclimacao = LatLng(-23.574083,-46.705629)
 
-        googleMap.addMarker(
-            MarkerOptions()
-                .position(fiap)
-                .title("FIAP")
-                .snippet("Sede do MBA")
-        )
-
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(fiap, 15f))
+        when (BuildConfig.FLAVOR) {
+            "world" -> {
+                googleMap.addMarker(
+                    MarkerOptions()
+                        .position(fiapAclimacao)
+                        .title("FIAP Aclimação")
+                )
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(fiapAclimacao, 15f))
+            }
+            "brasil" -> {
+                googleMap.addMarker(
+                    MarkerOptions()
+                        .position(fiapPaulista)
+                        .title("FIAP Paulista")
+                )
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(fiapPaulista, 15f))
+            }
+        }
     }
 
     fun fazerLigacao() {

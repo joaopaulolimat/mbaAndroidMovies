@@ -1,21 +1,30 @@
 package com.example.movies.View
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movies.Adapter.CurrentMovie
 import com.example.movies.Adapter.MovieAdapter
+import com.example.movies.BuildConfig
 import com.example.movies.Model.Movie
 import com.example.movies.R
 import com.example.movies.databinding.FragmentMoviesBinding
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -39,12 +48,17 @@ class MoviesFragment : Fragment(), MovieAdapter.OnEditClickListener, MovieAdapte
     private lateinit var moviesList: ArrayList<Movie>
     private var db = Firebase.firestore
 
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+
     }
 
     override fun onCreateView(
@@ -54,7 +68,24 @@ class MoviesFragment : Fragment(), MovieAdapter.OnEditClickListener, MovieAdapte
 
         _binding = FragmentMoviesBinding.inflate(inflater, container, false)
 
+        configureEnvironment(
+            binding.flag as TextView
+        )
+
+
+
         return binding.root
+    }
+
+    private fun configureEnvironment(tvEnvironment: TextView) {
+        when (BuildConfig.FLAVOR) {
+            "world" -> {
+                tvEnvironment.text = "Welcome 🌎"
+            }
+            "brasil" -> {
+                tvEnvironment.text = "Bem-vinde 🇧🇷"
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -10,10 +10,10 @@ import android.widget.Toast
 import com.example.movies.MainActivity
 import com.example.movies.R
 import com.example.movies.databinding.ActivitySignUpBinding
+import com.example.validatesignup.ValidateSignUp.isEmpty
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-
 class SignUp : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignUpBinding
@@ -40,7 +40,7 @@ class SignUp : AppCompatActivity() {
             val password = binding.txtPassword.text.toString()
             val confirmPassword = binding.txtPassword2.text.toString()
 
-            if (email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            if (isEmpty(email, password, confirmPassword)) {
                 Toast.makeText(
                     baseContext, getString(R.string.all_fields_required),
                     Toast.LENGTH_SHORT

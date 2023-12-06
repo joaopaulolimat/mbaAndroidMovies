@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap xmlns:android="http://schemas.android.com/apk/res/android">
+    <entry>
+        <key>hide_map</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>app_version</key>
+        <value>0.0.1</value>
+    </entry>
+</defaultsMap>
